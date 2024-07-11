@@ -17,7 +17,8 @@ class HomeController extends Controller
    public function form()
    {
         return view('pages.form', [
-            'title' => 'Halaman Formulir'
+            'title' => 'Halaman Formulir',
+            'book' => ''
         ]);
    }
 

@@ -1,23 +1,40 @@
 @extends('partials.main')
 
 @section('content')
+@php
+    if ($book) {
+        $route = 'book.update';
+        $id = $book->id;
+    } else {
+        $route = 'book.store';
+        $id = '';
+    }
+@endphp
+@if(session()->has('errors'))
+    <div class="alert alert-danger">
+        {{ session()->get('errors') }}
+    </div>
+@endif
     <div class="container">
         <h1 style="text-align: center">Selamat Datang di Halaman Formulir</h1>
-        <form>
+        <form action="{{ route($route,$id) }}" method="POST" enctype="multipart/form-data">
+            @if ($book)
+                @method('PUT')
+            @endif
+            @csrf
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                <label for="title" class="form-label">{{ $book ? 'Perbarui' : 'Tambahkan' }} judul buku: </label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ $book ? $book->title : '' }}">
             </div>
             <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <label for="author" class="form-label">{{ $book ? 'Perbarui' : 'Tambahkan' }} nama author: </label>
+                <input type="text" class="form-control" id="author" name="author" name="author" value="{{ $book ? $book->author : '' }}">
             </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            <div class="mb-3">
+                <label for="category" class="form-label">{{ $book ? 'Perbarui' : 'Tambahkan' }} kategori buku: </label>
+                <input type="text" class="form-control" id="category" name="category" value="{{ $book ? $book->category : '' }}">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">{{ $book ? 'PERBARUI' : 'KIRIM' }}</button>
         </form>
     </div>
 @endsection
